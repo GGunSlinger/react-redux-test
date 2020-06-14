@@ -6,7 +6,9 @@
   "dependencies": {
     "json-server": "^0.16.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "json-server-auth": "^2.0.2"
+  },
   "scripts": {
     "start": "json-server db.json --port 8080 -m ./node_modules/json-server-auth -r routes.json"
   },

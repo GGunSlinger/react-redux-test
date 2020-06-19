@@ -34,7 +34,6 @@ class ProfileContainer extends React.Component {
     }
 
     render() {
-        console.log('render')
         return <Profile logout={this.logout}
             createdUsers={this.props.createdUsers}
             deleteUser={this.deleteUser}

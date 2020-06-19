@@ -7,7 +7,8 @@ class Profile extends React.Component {
     state = {
         editMode: false,
         status: this.props.status,
-        id: null
+        id: null,
+        searchValue: ''
     }
 
     activateEditMode = (user, id) => {
@@ -25,11 +26,23 @@ class Profile extends React.Component {
         })
     }
 
-    onStatusChange = (e) => {
+    onStatusChange = e => {
         this.setState({
             status: e.currentTarget.value
         })
+    }
 
+    onSearchChange = e => {
+        this.props.searchUsers(e)
+        this.setState({
+            searchValue: e.currentTarget.value
+        })
+    }
+
+    clearSearchInput = () => {
+        this.setState({
+            searchValue: ''
+        })
     }
 
     render() {
@@ -37,11 +50,16 @@ class Profile extends React.Component {
             <div className={s.searchForm}>
                 <Button onClick={this.props.logout}>logout</Button>
                 <h1>SEARCH CONTACTS</h1>
-                <input type="text" onChange={this.props.searchUsers} placeholder='search users' />
-                {this.props.currentSearchUsers.map(e => {
+                <input onChange={(e) => { this.onSearchChange(e) }}
+                    placeholder='search users'
+                    value={this.state.searchValue} />
+                {this.props.currentSearchUsers && this.props.currentSearchUsers.map(e => {
                     return <div className={s.userWrap} key={e.id}>
                         <div className={s.user}> <div></div> {e.user}
-                            {e.status ? <div></div> : <Button onClick={() => { this.props.addToContactList(e) }}>Add user</Button>}
+                            {e.status ? <div></div> :
+                                <div onClick={this.clearSearchInput}>
+                                    <Button onClick={() => { this.props.addToContactList(e) }}>Add user</Button>
+                                </div>}
                         </div>
                     </div>
                 })}
@@ -64,7 +82,8 @@ class Profile extends React.Component {
                 )
             })}
             {this.state.editMode &&
-                <div><input onChange={this.onStatusChange} value={this.state.status} />
+                <div><input onChange={this.onStatusChange}
+                    value={this.state.status} />
                     <Button onClick={this.deactivateEditMode}>Confirm</Button>
                 </div>}
         </div>

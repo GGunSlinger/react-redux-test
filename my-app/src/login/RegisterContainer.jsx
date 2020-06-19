@@ -2,7 +2,7 @@ import React from 'react'
 import RegisterPage from './RegisterPage'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { registerNewUser, LoginAC } from '../redux/login-reducer'
+import { registerNewUser, login } from '../redux/login-reducer'
 import { redirectToProfile } from '../hoc/redirectToProfile'
 
 class RegisterContainer extends React.Component {
@@ -12,7 +12,7 @@ class RegisterContainer extends React.Component {
     }
 
     UserLogin = (value) => {
-        this.props.LoginAC(value)
+        this.props.login(value)
     }
 
     render() {
@@ -32,5 +32,5 @@ let mapStateToProps = (state) => {
 }
 
 
-export default compose(redirectToProfile, connect(mapStateToProps, { registerNewUser, LoginAC }))(RegisterContainer);
+export default compose(redirectToProfile, connect(mapStateToProps, { registerNewUser, login }))(RegisterContainer);
 

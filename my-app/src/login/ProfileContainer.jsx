@@ -22,6 +22,7 @@ class ProfileContainer extends React.Component {
     addToContactList = value => {
         this.props.createUserContacts(value)
     }
+    
     searchUsers = e => {
         this.props.searchUsersAC(this.props.currentUserContacts.filter(u => {
             return u.user.toLowerCase().includes(e.currentTarget.value.toLowerCase())
@@ -33,6 +34,7 @@ class ProfileContainer extends React.Component {
     }
 
     render() {
+        console.log('render')
         return <Profile logout={this.logout}
             createdUsers={this.props.createdUsers}
             deleteUser={this.deleteUser}

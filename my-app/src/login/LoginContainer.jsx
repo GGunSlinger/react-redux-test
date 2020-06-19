@@ -2,14 +2,14 @@ import React from 'react'
 import Login from './Login'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { registerNewUser, LoginAC } from '../redux/login-reducer'
+import { registerNewUser, login } from '../redux/login-reducer'
 import { redirectToProfile } from '../hoc/redirectToProfile'
 
 
 class LoginContainer extends React.Component {
 
     UserLogin = (value, currentUser) => {
-        this.props.LoginAC(value, currentUser)
+        this.props.login(value, currentUser)
     }
 
     render() {
@@ -29,4 +29,4 @@ let mapStateToProps = (state) => {
 }
 
 
-export default compose(redirectToProfile, connect(mapStateToProps, { registerNewUser, LoginAC }))(LoginContainer);
+export default compose(redirectToProfile, connect(mapStateToProps, { registerNewUser, login }))(LoginContainer);

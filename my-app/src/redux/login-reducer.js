@@ -1,26 +1,19 @@
 import * as axios from "axios";
 
-const CREATE_USER = 'CREATE_USER'
 const CREATE_USER_SESSION = 'CREATE_USER_SESSION'
 const LOGOUT = 'LOGOUT'
 const SEARCH_USERS = 'SEARCH_USERS'
 const CURRENT_CONTACTS = 'CURRENT_CONTACTS'
+const CLEAR_SEARCH_USERS = 'CLEAR_SEARCH_USERS'
 
 let initialState = {
     currentUserContacts: [],
-    possibleUserContacts: [],
-    createdUsers: [],
     localStorageUser: localStorage.user,
     currentSearchUsers: []
 }
 
 const loginReducer = (state = initialState, action) => {
     switch (action.type) {
-        case CREATE_USER:
-            return {
-                ...state,
-                createdUsers: action.value
-            }
         case CURRENT_CONTACTS:
             return {
                 ...state,
@@ -41,6 +34,11 @@ const loginReducer = (state = initialState, action) => {
                 ...state,
                 currentSearchUsers: action.users.filter(u => u.user !== localStorage.userEmail)
             }
+        case CLEAR_SEARCH_USERS:
+            return {
+                ...state,
+                currentSearchUsers: null
+            }
         default:
             return state
 
@@ -48,11 +46,12 @@ const loginReducer = (state = initialState, action) => {
 
 }
 
-export const setUsers = (value) => ({ type: CREATE_USER, value })
 export const userSession = (value) => ({ type: CREATE_USER_SESSION, value })
 export const logoutAC = (value) => ({ type: LOGOUT, value })
 export const searchUsersAC = (users) => ({ type: SEARCH_USERS, users })
 export const currentUserContacts = (value) => ({ type: CURRENT_CONTACTS, value })
+export const clearSearchUsers = () => ({ type: CLEAR_SEARCH_USERS })
+
 
 const url = 'http://localhost:8080/'
 
@@ -80,25 +79,20 @@ export const deleteUser = (user, id) => (dispatch) => {
     }).then(e => {
         axios.get(url + 'contacts').then(res => {
             dispatch(currentUserContacts(res.data))
-            dispatch(searchUsersAC(res.data))
+            dispatch(clearSearchUsers())
         })
     })
 }
 
 
 export const getActualUser = () => (dispatch) => {
-    axios.get(url + 'users')
-        .then(res => {
-            res.data.map(e => e.email === localStorage.userEmail ? localStorage.setItem('userID', e.id) : null)
-            dispatch(setUsers(res.data))
-            axios.get(url + 'contacts').then(res => {
-                dispatch(currentUserContacts(res.data))
-            })
-        })
+    axios.get(url + 'contacts').then(res => {
+        dispatch(currentUserContacts(res.data))
+    })
 }
 
 
-export const LoginAC = (value) => (dispatch) => {
+export const login = (value) => (dispatch) => {
     axios.post(url + 'login', {
         "email": value.login,
         "password": value.password
@@ -120,7 +114,7 @@ export const createUserContacts = (value) => (dispatch) => {
         "status": true
     }).then(res => {
         axios.get(url + 'contacts').then(res => {
-            dispatch(searchUsersAC(res.data))
+            dispatch(clearSearchUsers())
             dispatch(currentUserContacts(res.data))
         })
     })
@@ -133,7 +127,6 @@ export const editUser = (user, id) => (dispatch) => {
         "status": true
     }).then(res => {
         axios.get(url + 'contacts').then(res => {
-            dispatch(searchUsersAC(res.data))
             dispatch(currentUserContacts(res.data))
         })
     })

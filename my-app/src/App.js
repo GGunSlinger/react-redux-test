@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
-import RegisterContainer from './login/RegisterContainer'
+import RegisterContainer from './register/RegisterContainer'
 import LoginContainer from './login/LoginContainer'
-import Profile from './login/ProfileContainer'
+import Profile from './profile/ProfileContainer'
 import { Route } from 'react-router-dom';
 
 const App = (props) => {

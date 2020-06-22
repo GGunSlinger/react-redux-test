@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { PureComponent }from 'react'
 import { connect } from 'react-redux'
 import { redirectToLogin } from '../hoc/redirectToLogin'
 import { compose } from 'redux'
 import { logoutAC, getActualUser, deleteUser, searchUsersAC, createUserContacts, editUser } from '../redux/login-reducer'
 import Profile from './Profile'
 
-class ProfileContainer extends React.Component {
+class ProfileContainer extends PureComponent {
+
     componentDidMount() {
         this.props.getActualUser()
     }
@@ -20,7 +21,7 @@ class ProfileContainer extends React.Component {
     }
 
     addToContactList = value => {
-        this.props.createUserContacts(value)
+        this.props.createUserContacts(value.user, value.id)
     }
     
     searchUsers = e => {
@@ -34,15 +35,13 @@ class ProfileContainer extends React.Component {
     }
 
     render() {
+        console.log('render')
         return <Profile logout={this.logout}
-            createdUsers={this.props.createdUsers}
             deleteUser={this.deleteUser}
             searchUsers={this.searchUsers}
             addToContactList={this.addToContactList}
-            currentSearchUsers={this.props.currentSearchUsers}
-            currentUserContacts={this.props.currentUserContacts}
-            searchValue={this.props.searchValue}
-            editUser={this.props.editUser} />
+            {...this.props} />
+           
     }
 }
 

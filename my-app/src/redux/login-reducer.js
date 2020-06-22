@@ -1,4 +1,4 @@
-import * as axios from "axios";
+import { usersAPI, authAPI, profileAPI } from "../api/api"
 
 const CREATE_USER_SESSION = 'CREATE_USER_SESSION'
 const LOGOUT = 'LOGOUT'
@@ -41,9 +41,7 @@ const loginReducer = (state = initialState, action) => {
             }
         default:
             return state
-
     }
-
 }
 
 export const userSession = (value) => ({ type: CREATE_USER_SESSION, value })
@@ -52,89 +50,50 @@ export const searchUsersAC = (users) => ({ type: SEARCH_USERS, users })
 export const currentUserContacts = (value) => ({ type: CURRENT_CONTACTS, value })
 export const clearSearchUsers = () => ({ type: CLEAR_SEARCH_USERS })
 
-
-const url = 'http://localhost:8080/'
-
-export const registerNewUser = (value) => (dispatch) => {
-    axios.post(url + 'register', {
-        "email": value.login,
-        "password": value.password
-    }).then(res => {
-        axios.post(url + 'contacts', {
-            "user": value.login,
-            "status": false
-        })
+export const registerNewUser = (value) => async (dispatch) => {
+    try {
+        await authAPI.registerUser(value.login, value.password)
+        await authAPI.registerContact(value.login)
         alert('successful registration')
-    }).catch(error => {
+    } catch (e) {
         alert('email address already registered')
-    })
+    }
+}
 
+export const deleteUser = (user, id) => async (dispatch) => {
+    await profileAPI.deleteContact(user, id)
+    let res = await usersAPI.getUsers()
+    dispatch(clearSearchUsers())
+    dispatch(currentUserContacts(res.data))
+}
+
+export const getActualUser = () => async (dispatch) => {
+    let res = await usersAPI.getUsers()
+    dispatch(currentUserContacts(res.data))
+}
+
+export const login = (value) => async (dispatch) => {
+    let res = await authAPI.login(value.login, value.password)
+    if (res.data.accessToken) {
+        localStorage.setItem('user', JSON.stringify(res.data))
+        localStorage.setItem('userEmail', (value.login))
+        dispatch(userSession(localStorage.user))
+    } else { alert('wrong password or email') }
 }
 
 
-export const deleteUser = (user, id) => (dispatch) => {
-    axios.put(url + `contacts/${id}`, {
-        "user": user,
-        "status": false
-    }).then(e => {
-        axios.get(url + 'contacts').then(res => {
-            dispatch(currentUserContacts(res.data))
-            dispatch(clearSearchUsers())
-        })
-    })
+export const createUserContacts = (user, id) => async (dispatch) => {
+    await usersAPI.setContacts(user, id)
+    let res = await usersAPI.getUsers()
+    dispatch(clearSearchUsers())
+    dispatch(currentUserContacts(res.data))
 }
 
 
-export const getActualUser = () => (dispatch) => {
-    axios.get(url + 'contacts').then(res => {
-        dispatch(currentUserContacts(res.data))
-    })
+export const editUser = (user, id) => async (dispatch) => {
+    await usersAPI.setContacts(user, id)
+    let res = await usersAPI.getUsers()
+    dispatch(currentUserContacts(res.data))
 }
-
-
-export const login = (value) => (dispatch) => {
-    axios.post(url + 'login', {
-        "email": value.login,
-        "password": value.password
-    }).then(res => {
-        if (res.data.accessToken) {
-            localStorage.setItem('user', JSON.stringify(res.data))
-            localStorage.setItem('userEmail', (value.login))
-            dispatch(userSession(localStorage.user))
-        }
-    }).catch(error => {
-        alert('wrong password or email')
-    })
-}
-
-
-export const createUserContacts = (value) => (dispatch) => {
-    axios.put(url + `contacts/${value.id}`, {
-        "user": value.user,
-        "status": true
-    }).then(res => {
-        axios.get(url + 'contacts').then(res => {
-            dispatch(clearSearchUsers())
-            dispatch(currentUserContacts(res.data))
-        })
-    })
-}
-
-
-export const editUser = (user, id) => (dispatch) => {
-    axios.put(url + `contacts/${id}`, {
-        "user": user,
-        "status": true
-    }).then(res => {
-        axios.get(url + 'contacts').then(res => {
-            dispatch(currentUserContacts(res.data))
-        })
-    })
-}
-
-
-
-
-
 
 export default loginReducer;

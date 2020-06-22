@@ -35,7 +35,6 @@ class ProfileContainer extends PureComponent {
     }
 
     render() {
-        console.log('render')
         return <Profile logout={this.logout}
             deleteUser={this.deleteUser}
             searchUsers={this.searchUsers}

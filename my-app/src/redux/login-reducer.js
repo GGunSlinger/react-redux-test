@@ -50,7 +50,13 @@ export const searchUsersAC = (users) => ({ type: SEARCH_USERS, users })
 export const currentUserContacts = (value) => ({ type: CURRENT_CONTACTS, value })
 export const clearSearchUsers = () => ({ type: CLEAR_SEARCH_USERS })
 
-export const registerNewUser = (value) => async (dispatch) => {
+const usersFlow = async (dispatch, actionCreater, apiGetUsers) => {
+    let res = await apiGetUsers()
+    dispatch(clearSearchUsers())
+    dispatch(actionCreater(res.data))
+}
+
+export const registerNewUser = (value) => async () => {
     try {
         await authAPI.registerUser(value.login, value.password)
         await authAPI.registerContact(value.login)
@@ -62,14 +68,11 @@ export const registerNewUser = (value) => async (dispatch) => {
 
 export const deleteUser = (user, id) => async (dispatch) => {
     await profileAPI.deleteContact(user, id)
-    let res = await usersAPI.getUsers()
-    dispatch(clearSearchUsers())
-    dispatch(currentUserContacts(res.data))
+    usersFlow(dispatch, currentUserContacts, usersAPI.getUsers)
 }
 
 export const getActualUser = () => async (dispatch) => {
-    let res = await usersAPI.getUsers()
-    dispatch(currentUserContacts(res.data))
+    usersFlow(dispatch, currentUserContacts, usersAPI.getUsers)
 }
 
 export const login = (value) => async (dispatch) => {
@@ -84,16 +87,13 @@ export const login = (value) => async (dispatch) => {
 
 export const createUserContacts = (user, id) => async (dispatch) => {
     await usersAPI.setContacts(user, id)
-    let res = await usersAPI.getUsers()
-    dispatch(clearSearchUsers())
-    dispatch(currentUserContacts(res.data))
+    usersFlow(dispatch, currentUserContacts, usersAPI.getUsers)
 }
 
 
 export const editUser = (user, id) => async (dispatch) => {
     await usersAPI.setContacts(user, id)
-    let res = await usersAPI.getUsers()
-    dispatch(currentUserContacts(res.data))
+    usersFlow(dispatch, currentUserContacts, usersAPI.getUsers)
 }
 
 export default loginReducer;

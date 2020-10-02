@@ -53,11 +53,11 @@ class Profile extends React.Component {
                 <input onChange={(e) => { this.onSearchChange(e) }}
                     placeholder='search users'
                     value={this.state.searchValue} />
-                {this.props.currentSearchUsers && this.props.currentSearchUsers.map(e => {
+                    {this.props.currentSearchUsers && this.props.currentSearchUsers.map(e => {
                     return <div className={s.userWrap} key={e.id}>
-                        <div className={s.user}> <div></div> {e.user}
+                        <div className={s.userSearch}> <div></div> {e.user}
                             {e.status ? <div></div> :
-                                <div onClick={this.clearSearchInput}>
+                                <div className={s.addButton} onClick={this.clearSearchInput}>
                                     <Button onClick={() => { this.props.addToContactList(e) }}>Add user</Button>
                                 </div>}
                         </div>
@@ -71,7 +71,7 @@ class Profile extends React.Component {
             {this.props.currentUserContacts.map((e, index) => {
                 return (
                     !this.state.editMode && e.status && <div className={s.userWrap} key={e.id}>
-                        <div className={s.user}>
+                        <div className={s.userContacts}>
                             <Button onClick={() => this.activateEditMode(e.user, e.id)}>Change</Button>
 
                             {e.user}

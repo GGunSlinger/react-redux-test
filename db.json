@@ -1,0 +1,56 @@
+{
+  "users": [
+    {
+      "email": "admin@admin",
+      "password": "$2a$10$0AivEDzyQ/i8vE2YfpO0xuNGjtDTPsYa/CGF3ZSXmq0YCRhMbgtbu",
+      "id": 1
+    },
+    {
+      "email": "user@user",
+      "password": "$2a$10$8Uqyv773dF17dyZmVv7Uuez/75xzcfZsAdXabfYAN9F4GptGpvX6a",
+      "id": 2
+    },
+    {
+      "email": "qwerty@qwerty",
+      "password": "$2a$10$337p84K7ZKSN25J6lwZmr.6BrVmKnSL9dHL7HzLC4mPBSLYRRRNUW",
+      "id": 3
+    },
+    {
+      "email": "asdfg@asdfg",
+      "password": "$2a$10$m/7R8PfnMdT27HnAuKNrK.WWTCO5j6pqFrY57HlKM01e5l1QTxKmi",
+      "id": 4
+    },
+    {
+      "email": "zxcv@zxcv",
+      "password": "$2a$10$n9A2U7Ya1GZeZnfVAfvk/eCJ0SDcRdQ83gQwyquyfdAmtv3wdn0kK",
+      "id": 5
+    }
+  ],
+  "contacts": [
+    {
+      "user": "admin@admin",
+      "status": false,
+      "id": 1
+    },
+    {
+      "user": "user@user",
+      "status": true,
+      "id": 2
+    },
+    {
+      "user": "qwerty@qwerty",
+      "status": false,
+      "id": 3
+    },
+    {
+      "user": "asdfg@asdfgg",
+      "status": true,
+      "id": 4
+    },
+    {
+      "user": "zxcv@zxcv",
+      "status": true,
+      "id": 5
+    }
+  ]
+}

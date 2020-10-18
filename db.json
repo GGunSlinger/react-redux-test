@@ -24,6 +24,11 @@
       "email": "zxcv@zxcv",
       "password": "$2a$10$n9A2U7Ya1GZeZnfVAfvk/eCJ0SDcRdQ83gQwyquyfdAmtv3wdn0kK",
       "id": 5
+    },
+    {
+      "email": "admin@a",
+      "password": "$2a$10$nMahX3JEf73QVPC6eMIREu60TlTgmMubfWa44kfp6vMLfQOqicfPy",
+      "id": 6
     }
   ],
   "contacts": [
@@ -51,6 +56,11 @@
       "user": "zxcv@zxcv",
       "status": true,
       "id": 5
+    },
+    {
+      "user": "admin@a",
+      "status": false,
+      "id": 6
     }
   ]
 }

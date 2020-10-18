@@ -62,7 +62,10 @@ export const registerNewUser = (value) => async () => {
         await authAPI.registerContact(value.login)
         alert('successful registration')
     } catch (e) {
-        alert('email address already registered')
+        alert(
+        'the email address is already registered or the name is incorrect,',
+        'the login should look like this sample@sample.com'
+        )
     }
 }
 
